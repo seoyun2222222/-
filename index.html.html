@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>글러브 하나 · 야구선수가 되기까지</title>
+<style>
+:root{--bg:#f6f4ef;--fg:#2b2a27;--mut:#7a766d;--line:#dcd7cb;--acc:#3f5a6b;--card:#fbfaf6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1c1e;--fg:#e6e3dc;--mut:#9a968c;--line:#34363a;--acc:#8fb0c4;--card:#232427;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1c1e;--fg:#e6e3dc;--mut:#9a968c;--line:#34363a;--acc:#8fb0c4;--card:#232427;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.8 "Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:40px 22px 56px}
+h1{font-size:28px;font-weight:600;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--mut);margin:0 0 28px}
+.age{font-size:56px;font-weight:300;line-height:1;margin:0 0 4px;color:var(--acc)}
+h2{font-size:20px;font-weight:600;margin:0 0 14px}
+p{margin:0 0 16px}
+.mut{color:var(--mut);font-size:14px}
+input{width:100%;padding:12px 14px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;margin:6px 0 18px}
+button{display:block;width:100%;text-align:left;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:0 0 10px;cursor:pointer;line-height:1.6}
+button:hover,button:focus-visible{border-color:var(--acc);outline:none}
+button.go{text-align:center;background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.env{list-style:none;padding:0;margin:0 0 22px;border-top:1px solid var(--line)}
+.env li{padding:10px 0;border-bottom:1px solid var(--line)}
+.bars{margin:26px 0 0;padding-top:16px;border-top:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mut);margin:4px 0}
+.bar b{width:44px;font-weight:400}
+.bar i{flex:1;height:5px;background:var(--line);border-radius:3px;position:relative;overflow:hidden}
+.bar i u{position:absolute;inset:0 auto 0 0;background:var(--acc);border-radius:3px;transition:width .6s}
+.res{border-left:2px solid var(--acc);padding-left:14px;margin:0 0 22px}
+.big{font-size:22px;font-weight:600;margin:0 0 14px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var N="",st,log,ix,app=document.getElementById("app");
+var K=["실력","재정","기회","몸","마음"];
+var S=[
+{a:5,t:"처음 만난 야구",x:"동네에는 야구하는 아이가 없다. 어느 날 아버지가 어디선가 낡은 글러브를 하나 구해 왔다. 새것은 아니었지만, {n}의 손에는 처음으로 가죽 냄새가 배었다.",c:[
+["아버지와 매일 저녁 캐치볼을 한다",[8,0,0,0,8],"해 질 무렵 골목에서 공을 주고받았다. 서툴렀지만, 공이 글러브에 박히는 소리가 {n}은/는 좋았다."],
+["동네 아이들과 맨손으로 공놀이를 한다",[3,0,3,6,3],"공이 없어 테니스공으로 놀았다. 야구는 아니었지만 몸을 쓰는 법은 자연스럽게 익혔다."],
+["글러브는 두고 일하는 부모님을 돕는다",[-2,6,0,0,-2],"작은 손으로 할 수 있는 일을 했다. 글러브는 서랍 속에서 한동안 나오지 않았다."]]},
+{a:10,t:"야구부가 없는 학교",x:"학교에는 야구부가 없다. 가장 가까운 유소년 야구교실은 버스로 한 시간 거리이고, 월 회비는 집에 부담이 된다.",c:[
+["회비를 감당하며 주 2회 먼 도시 야구교실에 다닌다",[16,-18,5,-5,2],"왕복 두 시간. 숙제는 버스에서 했다. 처음으로 제대로 된 투구 폼을 배웠지만, 통장 잔액은 눈에 띄게 줄었다."],
+["친구들을 모아 비공식 야구 모임을 만든다",[8,-2,6,2,6],"운동장 구석에서 규칙도 정확히 모른 채 경기를 했다. 같이 공을 던질 사람이 생겼다는 것만으로 충분했다."],
+["영상을 보며 혼자 연습한다",[5,0,-2,0,-2],"휴대폰 화면 속 선수를 따라 했다. 맞게 하고 있는지 알려주는 사람은 없었다."]]},
+{a:15,t:"더 어려워진 형편",x:"부모님 일이 끊기면서 집안 형편이 더 나빠졌다. 야구부가 있는 중학교는 다른 지역에 있고, 가려면 돈이 든다.",c:[
+["모은 돈으로 장비를 사고 야구부 있는 학교로 간다",[10,-22,24,-4,-8],"처음으로 팀의 일원이 되었다. 하지만 장비값, 숙소비, 부모님 걱정까지 한꺼번에 어깨에 얹혔다."],
+["지역에 남아 일반 학교를 다니며 틈틈이 훈련한다",[3,2,-4,0,2],"형편은 버텼다. 대신 경기를 뛸 기회도, 누군가 봐줄 기회도 없는 시간이 이어졌다."],
+["야구를 잠시 접고 집안에 돈을 보탠다",[-14,18,-14,2,-6],"방과 후엔 일을 했다. 필요한 선택이었다. 그래도 가끔 공을 쥐던 손의 감각이 떠올랐다."]]},
+{a:17,t:"스카우트가 오는 대회",x:"스카우트가 오는 큰 대회가 열린다. 참가비와 이동비가 만만치 않고, 무리한 훈련 탓에 팔꿈치도 계속 신경 쓰인다.",c:[
+["통증을 참고 대회에 나간다",[5,-6,22,-24,0],"공을 던질 때마다 팔이 울렸다. 기록은 남았고, 스카우트 몇 명의 눈에 띄었다. 팔은 한동안 쉬어야 했다."],
+["치료와 휴식을 택하고 대회는 포기한다",[-3,-4,-4,14,4],"몸은 나아졌다. 하지만 올해 대회에서 {n}의 이름을 아는 사람은 없었다."],
+["감독에게 사정을 털어놓고 도움을 청한다",[2,-2,10,-4,2],"감독이 도움을 줄지는 {n}이/가 정할 수 있는 일이 아니었다.",[2,-2,-2,-4,-6],"감독은 사정은 알겠지만 어쩔 수 없다고 말했다. 돌아오는 길이 길었다."]]},
+{a:19,t:"드래프트 직전",x:"졸업을 앞두고 있다. 올해 드래프트에서 {n}의 이름이 불릴지는 아무도 알 수 없다. 남은 시간 동안 할 수 있는 건 하나뿐이다.",c:[
+["지원서를 내고 기존 훈련을 이어간다",[4,0,0,0,0],"할 수 있는 만큼 했다. 이제 결과를 기다릴 차례였다."],
+["스카우트 팀에 직접 영상과 기록을 보낸다",[0,-4,8,0,0],"답장이 올지 알 수 없는 메일을 수십 통 보냈다. 몇 곳에서만 답이 왔다."],
+["마지막으로 몸 관리에 집중한다",[3,-2,0,10,4],"최상의 몸 상태로 마지막 날을 맞았다. 남은 건 운이었다."]]}
+];
+function T(s){return s.replace(/\{n\}(은\/는|이\/가|을\/를)?/g,function(m,p){if(!p)return N;var c=N.charCodeAt(N.length-1),h=c>=44032&&c<=55203&&(c-44032)%28>0,q=p.split("/");return N+(h?q[0]:q[1])})}
+function cl(v){return Math.max(0,Math.min(100,v))}
+function bars(v,id){return '<div class="bars">'+K.map(function(k,i){return '<div class="bar"><b>'+k+'</b><i><u style="width:'+cl(v[i])+'%"></u></i></div>'}).join("")+'</div>'}
+function start(){app.innerHTML='<h1>글러브 하나</h1><p class="sub">야구선수가 되기까지, 0세부터 드래프트 직전까지</p><p>당신은 이 아이로 태어납니다. 태어날 곳은 고를 수 없습니다. 선택은 다섯 번뿐입니다.</p><label class="mut">아이의 이름</label><input id="nm" maxlength="8" placeholder="이름을 적어 주세요"><button class="go" id="b">태어나기</button>';
+document.getElementById("b").onclick=function(){N=(document.getElementById("nm").value||"").trim()||"민준";birth()}}
+function birth(){st=[10,25,5,60,50];log=[];ix=0;
+app.innerHTML='<p class="age">0세</p><h2>'+T('{n}이/가 태어났다')+'</h2><ul class="env"><li>태어난 곳: 지방의 작은 소도시</li><li>집안 형편: 넉넉하지 않음</li><li>학교: 야구부 없음</li><li>가장 가까운 야구팀: 버스로 한 시간 이상</li></ul><p class="mut">이 조건은 바꿀 수 없습니다.</p><button class="go" id="b">시간이 흐른다</button>';
+document.getElementById("b").onclick=function(){flow(0)}}
+var F=[
+[[1,"첫걸음을 뗐다. 부모님은 일터에서 늦게 돌아왔고, 할머니가 {n}을/를 돌봤다."],[2,"처음 또렷하게 한 말이 공이었다. 집에 있는 둥근 것은 전부 굴려 보았다."],[3,"어린이집 대신 동네 놀이터에서 하루를 보냈다. 혼자 노는 시간이 길었다."],[4,"이웃 형들이 공 던지는 모습을 한참 구경했다. 야구라는 말을 처음 들었다."]],
+[[6,"초등학교에 입학했다. 전교생이 백 명이 채 안 되는 작은 학교였다."],[7,"운동장 한쪽엔 야구부 대신 축구 골대만 서 있었다."],[8,"형편이 빠듯해 새 운동화 한 켤레가 집안의 큰 결정이 됐다."],[9,"TV로 프로야구 중계를 처음 끝까지 봤다. 화면 속 선수들은 다른 세상 사람 같았다."]],
+[[11,"키가 쑥 자랐다. 반에서 공을 제일 멀리 던진다는 말을 들었다."],[12,"함께 겨룰 상대 팀이 없었다. 내가 어디쯤인지 알 방법이 없었다."],[13,"아버지의 일자리가 자주 바뀌었다. 저녁 식탁에서 돈 이야기가 늘었다."],[14,"진학 안내문을 받았다. 야구부가 있는 학교는 전부 낯선 지역에 있었다."]],
+[[16,"한 해가 빠르게 지나갔다. 훈련도, 일도, 공부도 하루가 늘 모자랐다."]],
+[[18,"스카우트 이야기가 오가는 시기가 됐다. 또래 중 몇몇은 이미 개인 코치가 있었다."]]];
+function flow(k){var L=F[k],i=0,tm,ag,ul,b;
+app.innerHTML='<p class="age" id="ag">'+(k?S[k-1].a:0)+'세</p><p class="mut">시간이 흐른다</p><ul class="env" id="ul"></ul><button class="go" id="b">건너뛰기</button>'+bars(st);
+ag=document.getElementById("ag");ul=document.getElementById("ul");b=document.getElementById("b");
+function add(){var e=L[i++],li=document.createElement("li");ag.textContent=e[0]+"세";li.textContent=T(e[1]);ul.appendChild(li);
+if(i>=L.length){clearInterval(tm);b.textContent=S[k].a+"세로 가기";b.onclick=stage}}
+b.onclick=function(){clearInterval(tm);while(i<L.length)add()};
+add();if(i<L.length)tm=setInterval(add,1500)}
+function stage(){var s=S[ix],x=s.x;
+if(s.a==17&&log[2]==2)x="공을 놓은 지 2년, 그래도 마음 한쪽엔 야구가 남아 있다. "+x;
+app.innerHTML='<p class="age">'+s.a+'세</p><h2>'+s.t+'</h2><p>'+T(x)+'</p>'+s.c.map(function(c,i){return '<button data-i="'+i+'">'+c[0]+'</button>'}).join("")+bars(st);
+[].forEach.call(app.querySelectorAll("button"),function(b){b.onclick=function(){pick(+b.dataset.i)}})}
+function pick(i){var s=S[ix],c=s.c[i],e=c[1],t=c[2];
+if(c[3]&&Math.random()<.5){e=c[3];t=c[4]}
+log.push(i);for(var k=0;k<5;k++)st[k]=cl(st[k]+e[k]);ix++;
+var last=ix>=S.length;
+app.innerHTML='<p class="age">'+s.a+'세</p><h2>'+c[0]+'</h2><div class="res"><p>'+T(t)+'</p></div><button class="go" id="b">'+(last?"드래프트 결과 보기":"시간이 흐른다")+'</button>'+bars(st);
+document.getElementById("b").onclick=last?ending:function(){flow(ix)}}
+function ending(){var sc=.4*st[0]+.25*st[2]+.15*st[3]+.1*st[4]+.1*st[1];if(st[3]<25)sc-=6;
+var th=47,ok=sc+(Math.random()*12-6)>=th,msg;
+if(ok)msg="드래프트 마지막 라운드, "+N+"의 이름이 불렸다. 지명이었다. 이 이름 뒤에는 운과 선택, 그리고 지켜낸 몇 번의 고비가 있었다. 같은 출발선에서 이름이 불리는 아이는 많지 않다.";
+else if(log[2]==2)msg="공을 놓았던 시간은 생각보다 길었다. 이름은 끝내 불리지 않았다. "+N+"이(가) 포기한 것이 아니라, 포기해야 했던 시간이 있었다.";
+else if(st[3]<30)msg="이름은 불리지 않았다. 몸은 이미 오래전부터 신호를 보내고 있었다. 기회를 잡기 위해 감당해야 했던 값이 너무 컸다.";
+else if(sc>=th-8)msg="이름은 불리지 않았다. 아주 근소한 차이였다. 몇 번의 선택, 혹은 몇 번의 기회가 달랐다면 결과도 달랐을지 모른다.";
+else msg="이름은 불리지 않았다. "+N+"은(는) 끝까지 공을 놓지 않았다. 다만 야구부도, 돈도, 지켜보는 사람도 없던 길에서 닿을 수 있는 곳은 여기까지였다.";
+msg=msg.replace(/이\(가\)|은\(는\)/g,function(m){var c=N.charCodeAt(N.length-1),h=c>=44032&&c<=55203&&(c-44032)%28>0;return m=="이(가)"?(h?"이":"가"):(h?"은":"는")});
+var me=Math.round(sc),alt=Math.min(100,me+18);
+app.innerHTML='<p class="age">19세</p><p class="big">'+(ok?"지명":"미지명")+'</p><p>'+msg+'</p><div class="bars"><div class="bar"><b>종합</b><i><u style="width:'+cl(me)+'%"></u></i><span>'+me+'</span></div><div class="bar"><b>기준</b><i><u style="width:'+th+'%"></u></i><span>'+th+'</span></div><div class="bar"><b>다른 환경</b><i><u style="width:'+alt+'%"></u></i><span>'+alt+'</span></div></div><p class="mut" style="margin-top:12px">‘다른 환경’은 같은 선택을 야구부가 있는 도시, 안정된 가정에서 했다면의 가정입니다. 모든 수치는 게임 속 설정이며 실제 통계가 아닙니다.</p>'+bars(st)+'<button class="go" id="b" style="margin-top:22px">다시 태어나기</button>';
+document.getElementById("b").onclick=start}
+start();
+</script>
+</body>
+</html>
